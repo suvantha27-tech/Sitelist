@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Player & Image Banner</title>
+    <title>Video Player - Test Photo</title>
     <style>
         * { box-sizing: border-box; }
         html, body {
@@ -22,14 +22,14 @@
             height: 100vh;
             background: #000;
         }
-        /* វីដេអូទំហំកន្លះអេក្រង់ (50vh) នៅផ្នែកខាងលើ */
+        /* វីដេអូទំហំកន្លះអេក្រង់ (50vh) លេងស្វ័យប្រវត្តិ */
         video {
             width: 100%;
             height: 50vh;
             object-fit: contain;
             background: #000;
         }
-        /* ផ្នែកសម្រាប់ដាក់រូបភាពចុចនៅខាងក្រោម មិនឱ្យបាំងគ្នា */
+        /* ផ្នែកសម្រាប់ដាក់រូបភាពចុចនៅខាងក្រោម */
         .banner-container {
             width: 100%;
             height: 50vh;
@@ -58,13 +58,13 @@
 <body>
 
     <div class="main-container">
-        <!-- វីដេអូទំហំកន្លះអេក្រង់ មាន controls ពេញលេញ -->
-        <video id="player" controls playsinline></video>
+        <!-- វីដេអូទំហំកន្លះអេក្រង់ លេងស្វ័យប្រវត្តិ -->
+        <video id="player" controls autoplay muted playsinline></video>
 
-        <!-- រូបភាពសម្រាប់ចុចចូល Smart Link (អាចដូរតំណរូបភាព src តាមចិត្ត) -->
+        <!-- រូបភាព Test ឥតគិតថ្លៃសម្រាប់ចុចចូល Smart Link -->
         <div class="banner-container">
             <a href="https://boring-active.com/7B6FQd" target="_blank" rel="noopener noreferrer">
-                <img src="hhttps://i.ibb.co/pjhJJVXm/image-with-play-button-44.png" alt="Smart Link Banner">
+                <img src="https://picsum.photos/600/300" alt="Test Banner">
             </a>
         </div>
     </div>
@@ -76,6 +76,9 @@
 
         if (videoUrl) {
             player.src = videoUrl;
+            player.play().catch(error => {
+                console.log("Autoplay prevented:", error);
+            });
         } else {
             document.body.innerHTML = "<h2 style='color:white;text-align:center;margin-top:40px;'>No Video Found</h2>";
         }
