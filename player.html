@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Player - Hybrid 2 in 1</title>
+    <title>Video Player & Image Banner</title>
     <style>
         * { box-sizing: border-box; }
         html, body {
@@ -16,53 +16,57 @@
             font-family: sans-serif;
         }
         .main-container {
-            position: relative;
+            display: flex;
+            flex-direction: column;
             width: 100%;
             height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             background: #000;
         }
-        /* វីដេអូលេងពេញអេក្រង់ */
+        /* វីដេអូទំហំកន្លះអេក្រង់ (50vh) នៅផ្នែកខាងលើ */
         video {
             width: 100%;
-            height: 100%;
+            height: 50vh;
             object-fit: contain;
             background: #000;
         }
-        /* ប៊ូតុង Smart Link បែបកូនកាត់ (Floating Banner) នៅផ្នែកខាងក្រោម */
-        .overlay-banner {
-            position: absolute;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 45, 85, 0.95);
-            color: white;
-            padding: 12px 28px;
-            border-radius: 30px;
-            font-size: 15px;
-            font-weight: bold;
-            text-decoration: none;
-            z-index: 10;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+        /* ផ្នែកសម្រាប់ដាក់រូបភាពចុចនៅខាងក្រោម មិនឱ្យបាំងគ្នា */
+        .banner-container {
+            width: 100%;
+            height: 50vh;
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 8px;
-            white-space: nowrap;
+            background: #111;
+            padding: 15px;
+        }
+        .banner-container a {
+            display: block;
+            width: 100%;
+            max-width: 450px;
+            height: 100%;
+            max-height: 220px;
+        }
+        .banner-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
 <body>
 
     <div class="main-container">
-        <!-- វីដេអូបង្ហាញធម្មតាមាន controls ពេញលេញ -->
+        <!-- វីដេអូទំហំកន្លះអេក្រង់ មាន controls ពេញលេញ -->
         <video id="player" controls playsinline></video>
 
-        <!-- ប៊ូតុង Smart Link ចន្លោះកណ្តាលនិងក្រោម (Hybrid Solution) -->
-        <a href="https://boring-active.com/7B6FQd" target="_blank" rel="noopener noreferrer" class="overlay-banner">
-            ▶ ចុចទីនេះមើលវីដេអូពេញ 🔗
-        </a>
+        <!-- រូបភាពសម្រាប់ចុចចូល Smart Link (អាចដូរតំណរូបភាព src តាមចិត្ត) -->
+        <div class="banner-container">
+            <a href="https://boring-active.com/7B6FQd" target="_blank" rel="noopener noreferrer">
+                <img src="https://via.placeholder.com/600x300/ff2d55/ffffff?text=Click+Here+To+Watch+Full+Video" alt="Smart Link Banner">
+            </a>
+        </div>
     </div>
 
     <script>
