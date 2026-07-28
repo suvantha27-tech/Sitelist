@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Player & Smart Link</title>
+    <title>Video Player - Hybrid 2 in 1</title>
     <style>
         * { box-sizing: border-box; }
         html, body {
@@ -16,50 +16,53 @@
             font-family: sans-serif;
         }
         .main-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
+            position: relative;
             width: 100%;
             height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             background: #000;
         }
-        /* វីដេអូលេងនៅផ្នែកខាងលើ */
+        /* វីដេអូលេងពេញអេក្រង់ */
         video {
             width: 100%;
-            flex: 1;
+            height: 100%;
             object-fit: contain;
             background: #000;
         }
-        /* ប៊ូតុង Smart Link នៅខាងក្រោមបង្អស់ */
-        .bottom-link-bar {
-            width: 100%;
-            background: #ff2d55;
-            padding: 16px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-        .bottom-link-bar a {
-            color: #ffffff;
-            font-size: 16px;
+        /* ប៊ូតុង Smart Link បែបកូនកាត់ (Floating Banner) នៅផ្នែកខាងក្រោម */
+        .overlay-banner {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 45, 85, 0.95);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-size: 15px;
             font-weight: bold;
             text-decoration: none;
-            display: block;
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
         }
     </style>
 </head>
 <body>
 
     <div class="main-container">
-        <!-- វីដេអូ -->
-        <video id="player" controls autoplay muted playsinline></video>
+        <!-- វីដេអូបង្ហាញធម្មតាមាន controls ពេញលេញ -->
+        <video id="player" controls playsinline></video>
 
-        <!-- Smart Link នៅខាងក្រោម -->
-        <div class="bottom-link-bar">
-            <a href="https://boring-active.com/7B6FQd" target="_blank" rel="noopener noreferrer">
-                🔥 ចុចទីនេះដើម្បីមើលវីដេអូពេញ 🔗
-            </a>
-        </div>
+        <!-- ប៊ូតុង Smart Link ចន្លោះកណ្តាលនិងក្រោម (Hybrid Solution) -->
+        <a href="https://boring-active.com/7B6FQd" target="_blank" rel="noopener noreferrer" class="overlay-banner">
+            ▶ ចុចទីនេះមើលវីដេអូពេញ 🔗
+        </a>
     </div>
 
     <script>
@@ -69,9 +72,6 @@
 
         if (videoUrl) {
             player.src = videoUrl;
-            player.play().catch(error => {
-                console.log("Autoplay prevented:", error);
-            });
         } else {
             document.body.innerHTML = "<h2 style='color:white;text-align:center;margin-top:40px;'>No Video Found</h2>";
         }
