@@ -24,19 +24,20 @@
             height: 100vh;
             background: #000;
         }
-        /* វីដេអូលេងនៅខាងលើ */
+        /* វីដេអូលេងនៅផ្នែកខាងលើ */
         video {
             width: 100%;
             flex: 1;
             object-fit: contain;
             background: #000;
         }
-        /* ប៊ូតុង Smart Link នៅខាងក្រោមបង្អស់ មិនឱ្យបាត់វីដេអូ */
+        /* ប៊ូតុង Smart Link នៅខាងក្រោមបង្អស់ */
         .bottom-link-bar {
             width: 100%;
             background: #ff2d55;
-            padding: 14px;
+            padding: 16px;
             text-align: center;
+            flex-shrink: 0;
         }
         .bottom-link-bar a {
             color: #ffffff;
@@ -50,13 +51,13 @@
 <body>
 
     <div class="main-container">
-        <!-- វីដេអូលេងធម្មតា (មាន controls, autoplay, muted) -->
+        <!-- វីដេអូ -->
         <video id="player" controls autoplay muted playsinline></video>
 
-        <!-- Smart Link នៅខាងក្រោម ពេលចុចវានឹងមិនកាត់ផ្ដាច់ទំព័រវីដេអូក្នុង App ខ្លាំងពេក -->
+        <!-- Smart Link នៅខាងក្រោម -->
         <div class="bottom-link-bar">
             <a href="https://boring-active.com/7B6FQd" target="_blank" rel="noopener noreferrer">
-                🔥 ចុចទីនេះដើម្បីមើលវីដេអូពេញ (Full Video) 🔗
+                🔥 ចុចទីនេះដើម្បីមើលវីដេអូពេញ 🔗
             </a>
         </div>
     </div>
