@@ -1,71 +1,306 @@
-<!DOCTYPE html>
+[7/30/2026 11:42 PM] កូន ប៉ាប៉ា: <!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-P8WT456TS4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-P8WT456TS4');
-</script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P8WT456TS4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-P8WT456TS4');
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Watch Video then Smart Link</title>
     <style>
-        * { box-sizing: border-box; }
-        html, body {
+        /* ----- RESET & GLOBAL ----- */
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+        html, body {
             width: 100%;
             height: 100%;
-            background: #000;
+            background: #0a0c12;
             overflow: hidden;
-            font-family: sans-serif;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
         }
-        .container {
+
+        /* ----- VIDEO CONTAINER (fullscreen) ----- */
+        .video-wrapper {
             width: 100%;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             background: #000;
+            position: relative;
         }
+
         video {
             width: 100%;
             height: 100%;
             object-fit: contain;
             background: #000;
+            display: block;
+        }
+
+        /* ----- SMART LINK BADGE (floating, from bottom) ----- */
+        .smart-link-container {
+            position: fixed;
+            bottom: 2.5rem;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;          /* allow clicks to pass to video if needed */
+            z-index: 20;
+            padding: 0 1.2rem;
+        }
+
+        .smart-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(12, 18, 34, 0.65);
+            backdrop-filter: blur(14px) saturate(1.3);
+            -webkit-backdrop-filter: blur(14px) saturate(1.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 60px;
+            padding: 0.8rem 1.8rem 0.8rem 2.2rem;
+            box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.02);
+            color: #eef3ff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+            letter-spacing: 0.2px;
+            pointer-events: auto;           /* make it clickable */
+            transition: all 0.25s ease;
+            max-width: 90%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            /* animation: slide up from bottom (walks from below) */
+            animation: slideUpFromBottom 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            opacity: 0;
+            transform: translateY(40px) scale(0.97);
+        }
+
+        .smart-link i {
+            font-size: 1.3rem;
+            color: #7f9eff;
+            transition: transform 0.25s ease;
+            flex-shrink: 0;
+        }
+
+        .smart-link .link-label {
+            background: linear-gradient(135deg, #c8d8ff, #a8beff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+        }
+
+        .smart-link .link-url {
+            font-weight: 300;
+            font-size: 0.8rem;
+            color: #a7bae6;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.2rem 1rem 0.2rem 1.2rem;
+            border-radius: 40px;
+            border-left: 1px solid rgba(255, 255, 255, 0.06);
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .smart-link .arrow-icon {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            margin-left: 0.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        /* HOVER effects (smart & responsive) */
+        .smart-link:hover {
+[7/30/2026 11:42 PM] កូន ប៉ាប៉ា: background: rgba(22, 32, 60, 0.8);
+            border-color: rgba(100, 140, 255, 0.4);
+            box-shadow: 0 18px 40px -10px #1a2a6a, 0 0 0 1px #4e7aff40;
+            transform: scale(1.02) translateY(-2px);
+        }
+
+        .smart-link:hover i {
+            transform: translateX(4px) scale(1.05);
+        }
+
+        .smart-link:hover .arrow-icon {
+            transform: translateX(3px);
+        }
+
+        .smart-link:active {
+            transform: scale(0.96) translateY(2px);
+        }
+
+        /* ----- ANIMATION: slide from bottom (ដើរពីក្រោម) ----- */
+        @keyframes slideUpFromBottom {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) scale(0.94);
+            }
+            60% {
+                opacity: 1;
+                transform: translateY(-4px) scale(1.01);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* small pulse on load (extra walk effect) */
+        .smart-link.walk-effect {
+            animation: slideUpFromBottom 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        /* ----- RESPONSIVE TWEAKS ----- */
+        @media (max-width: 600px) {
+            .smart-link {
+                padding: 0.6rem 1.2rem 0.6rem 1.6rem;
+                font-size: 0.9rem;
+                gap: 0.5rem;
+                flex-wrap: nowrap;
+                border-radius: 40px;
+            }
+            .smart-link .link-url {
+                max-width: 120px;
+                font-size: 0.7rem;
+                padding: 0.1rem 0.7rem 0.1rem 0.9rem;
+            }
+            .smart-link i {
+                font-size: 1.1rem;
+            }
+            .smart-link-container {
+                bottom: 1.5rem;
+                padding: 0 0.8rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .smart-link .link-url {
+                max-width: 80px;
+            }
+            .smart-link {
+                font-size: 0.8rem;
+                padding: 0.5rem 1rem 0.5rem 1.2rem;
+            }
+        }
+
+        /* fallback if something fails */
+        .no-video-msg {
+            color: #c8d0e6;
+            background: #11161f;
+            padding: 2rem 3rem;
+            border-radius: 30px;
+            border: 1px solid #2a334a;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- វីដេអូលេងធម្មតា មាន Controls ពេញលេញ និង Autoplay -->
+    <div class="video-wrapper">
+        <!-- Video element: controls + autoplay + muted (for auto policy) -->
         <video id="player" controls autoplay muted playsinline></video>
     </div>
 
+    <!-- SMART LINK (floating from bottom) -->
+    <div class="smart-link-container">
+        <a href="#" id="smartLink" target="_blank" rel="noopener noreferrer" class="smart-link walk-effect">
+            <i class="fas fa-link"></i>
+            <span class="link-label">Smart Link</span>
+            <span class="link-url" id="linkUrlDisplay">arcadiablankdenying.com</span>
+            <i class="fas fa-arrow-right arrow-icon"></i>
+        </a>
+    </div>
+
+    <!-- Font Awesome (icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
     <script>
-        const params = new URLSearchParams(window.location.search);
-        const videoUrl = params.get("video");
-        const player = document.getElementById("player");
-        const smartLink = "https://arcadiablankdenying.com/fqe7h6e1?key=1dd585cf18df934105bec8bc629e7064";
+        (function() {
+            // ----- CONFIG -----
+            const SMART_LINK_HREF = "https://arcadiablankdenying.com/fqe7h6e1?key=1dd585cf18df934105bec8bc629e7064";
+            const SMART_LINK_DISPLAY = "arcadiablankdenying.com";   // short display
 
-        if (videoUrl) {
-            player.src = videoUrl;
-            player.play().catch(error => {
-                console.log("Autoplay prevented:", error);
+            // DOM refs
+            const player = document.getElementById('player');
+            const smartLink = document.getElementById('smartLink');
+            const linkUrlDisplay = document.getElementById('linkUrlDisplay');
+
+            // Set smart link href + display text
+            smartLink.href = SMART_LINK_HREF;
+            linkUrlDisplay.textContent = SMART_LINK_DISPLAY;
+
+            // ----- GET VIDEO FROM QUERY STRING -----
+            const params = new URLSearchParams(window.location.search);
+            const videoUrl = params.get("video");
+
+            if (videoUrl) {
+[7/30/2026 11:42 PM] កូន ប៉ាប៉ា: player.src = videoUrl;
+                // Autoplay with catch (browser may block)
+                player.play().catch(err => {
+                    console.log("Autoplay blocked:", err);
+                    // user can click play manually (controls are visible)
+                });
+            } else {
+                // fallback: show message inside video wrapper
+                const wrapper = document.querySelector('.video-wrapper');
+                wrapper.innerHTML = `
+                    <div class="no-video-msg">
+                        <i class="fas fa-video" style="font-size: 2.5rem; color: #4e7aff; margin-bottom: 0.8rem; display: block;"></i>
+                        <h2 style="font-weight: 400; color: #d0dcff;">No video provided</h2>
+                        <p style="color: #8895b9; margin-top: 0.4rem;">Add <code style="background:#1f2638; padding:0.2rem 0.8rem; border-radius:20px;">?video=URL</code></p>
+                    </div>
+                `;
+                // hide smart link? keep it but disabled
+                smartLink.style.opacity = '0.4';
+                smartLink.style.pointerEvents = 'none';
+            }
+
+            // ----- AUTO REDIRECT ON VIDEO END (ស្វ័យប្រវត្តិ) -----
+            player.addEventListener('ended', function() {
+                // Redirect to smart link when video finishes
+                window.location.href = SMART_LINK_HREF;
             });
-        } else {
-            document.body.innerHTML = "<h2 style='color:white;text-align:center;margin-top:40px;'>No Video Found</h2>";
-        }
 
-        // ពេលវីដេអូលេងចប់ (Ended) Smart Link នឹងបញ្ជូនទៅមុខដោយស្វ័យប្រវត្តិដោយមិនបាច់ចុច
-        player.addEventListener('ended', function() {
-            window.location.href = smartLink;
-        });
+            // ----- (optional) track if user clicks the smart link manually -----
+            smartLink.addEventListener('click', function(e) {
+                // if video is still playing, you might want to prevent? 
+                // but we allow manual click anytime.
+                console.log('Smart link clicked manually');
+                // Google Analytics could be triggered here
+                gtag('event', 'smart_link_click', {
+                    'event_category': 'engagement',
+                    'event_label': SMART_LINK_HREF
+                });
+                // The link will open in new tab because of target="_blank"
+                // we don't prevent default
+            });
+
+            // (optional) also send event when video ends (automatic redirect)
+            player.addEventListener('ended', function() {
+                gtag('event', 'video_ended_auto_redirect', {
+                    'event_category': 'video',
+                    'event_label': videoUrl || 'unknown'
+                });
+            });
+
+            console.log('✅ Video player ready · Smart link walks from bottom.');
+        })();
     </script>
+
 </body>
 </html>
