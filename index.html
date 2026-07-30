@@ -1,92 +1,311 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P8WT456TS4"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+        <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P8WT456TS4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-      gtag('config', 'G-P8WT456TS4');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video and Smart Link Split View</title>
-    <style>
-        * { box-sizing: border-box; }
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            overflow: hidden;
-            font-family: sans-serif;
-            display: flex;
-            flex-direction: column;
-        }
+  gtag('config', 'G-P8WT456TS4');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GoFlie Admin</title>
 
-        .video-section {
-            flex: 1;
-            width: 100%;
-            height: 50vh;
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            background: #000;
-        }
-     
-        .smartlink-section {
-            flex: 1;
-            width: 100%;
-            height: 50vh;
-            background: #fff;
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    padding:30px;
+    background:#111;
+    color:#fff;
+    font-family:Arial,sans-serif;
+    max-width:1100px;
+    margin:auto;
+}
+
+h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    background:#222;
+    color:#fff;
+    border:1px solid #444;
+    border-radius:6px;
+}
+
+button{
+    border:none;
+    padding:10px 16px;
+    color:#fff;
+    cursor:pointer;
+    border-radius:5px;
+    margin:2px;
+    transition:.2s;
+}
+
+button:hover{
+    opacity:.9;
+}
+
+.create{background:#00c853;}
+.copy{background:#2962ff;}
+.edit{background:#ff9800;}
+.delete{background:#d50000;}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th,td{
+    border:1px solid #333;
+    padding:10px;
+    text-align:left;
+    vertical-align:middle;
+}
+
+th{
+    background:#222;
+}
+
+td.url{
+    max-width:500px;
+    word-break:break-all;
+}
+
+a{
+    color:#00e5ff;
+    text-decoration:none;
+}
+
+a:hover{
+    text-decoration:underline;
+}
+
+@media(max-width:768px){
+
+table{
+    display:block;
+    overflow:auto;
+}
+
+body{
+    padding:15px;
+}
+
+button{
+    width:100%;
+    margin-top:5px;
+}
+
+}
+</style>
+
 </head>
+
 <body>
 
-  
-    <div class="video-section">
-        <video id="player" controls autoplay muted playsinline></video>
-    </div>
+<h2>GoFlie Admin Dashboard</h2>
 
- 
-    <div class="smartlink-section">
-        <iframe id="smartLinkFrame"></iframe>
-    </div>
+<input id="url" placeholder="https://example.com">
 
-    <script>
-        const params = new URLSearchParams(window.location.search);
-        const videoUrl = params.get("video");
-        const player = document.getElementById("player");
-        const smartLinkFrame = document.getElementById("smartLinkFrame");
-        const smartLink = "https://arcadiablankdenying.com/fqe7h6e1?key=1dd585cf18df934105bec8bc629e7064";
+<button class="create" onclick="create()">
+Create Link
+</button>
 
-      
-        if (videoUrl) {
-            player.src = videoUrl;
-            player.play().catch(error => {
-                console.log("Autoplay prevented:", error);
-            });
-        } else {
-            document.querySelector('.video-section').innerHTML = "<h2 style='color:white;text-align:center;'>No Video Found</h2>";
-        }
+<table>
 
-      នា
-        smartLinkFrame.src = smartLink;
-    </script>
+<thead>
+
+<tr>
+<th>Slug</th>
+<th>URL</th>
+<th>Clicks</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="list">
+
+</tbody>
+
+</table>
+
+<script>
+
+const API=window.location.origin;
+
+function randomSlug(length=6){
+
+const chars="abcdefghijklmnopqrstuvwxyz0123456789";
+
+let result="";
+
+for(let i=0;i<length;i++){
+
+result+=chars[Math.floor(Math.random()*chars.length)];
+
+}
+
+return result;
+
+}
+
+async function load(){
+
+const res=await fetch(API+"/api/list");
+
+const data=await res.json();
+
+document.getElementById("list").innerHTML=data.map(x=>`
+
+<tr>
+
+<td>${x.slug}</td>
+
+<td class="url">
+<a href="${x.original_url}" target="_blank">
+${x.original_url}
+</a>
+</td>
+
+<td style="text-align:center">
+${x.clicks ?? 0}
+</td>
+
+<td>
+
+<button class="copy"
+onclick="copyLink('${x.slug}')">
+Copy
+</button>
+
+<button class="edit"
+onclick="editLink('${x.slug}','${x.original_url}','${x.title||""}')">
+Edit
+</button>
+
+<button class="delete"
+onclick="removeLink('${x.slug}')">
+Delete
+</button>
+
+</td>
+
+</tr>
+
+`).join("");
+
+}
+
+async function create(){
+
+const url=document.getElementById("url").value.trim();
+
+if(!url){
+
+alert("Please enter URL");
+
+return;
+
+}
+
+await fetch(API+"/api/create",{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+slug:randomSlug(),
+
+url:url
+
+})
+
+});
+
+document.getElementById("url").value="";
+
+load();
+
+}
+
+async function editLink(slug,url,title){
+
+const newUrl=prompt("Original URL",url);
+
+if(newUrl===null)return;
+
+const newTitle=prompt("Title",title);
+
+await fetch(API+"/api/update",{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+slug:slug,
+
+url:newUrl,
+
+title:newTitle
+
+})
+
+});
+
+load();
+
+}
+
+async function removeLink(slug){
+
+if(!confirm("Delete "+slug+" ?")) return;
+
+await fetch(API+"/api/delete/"+slug);
+
+load();
+
+}
+
+function copyLink(slug){
+
+const link=location.origin+"/"+slug;
+
+navigator.clipboard.writeText(link);
+
+alert("Copied:\n"+link);
+
+}
+
+load();
+
+</script>
+
 </body>
 </html>
