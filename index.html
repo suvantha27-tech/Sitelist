@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-P8WT456TS4"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -12,300 +12,519 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GoFlie Admin</title>
+<title>GoFlie - Trending Live Cameras</title>
+
+<meta name="description" content="Watch trending public live cameras from around the world. Explore city, beach, street and travel live streams.">
 
 <style>
-*{
-    box-sizing:border-box;
-}
 
 body{
-    margin:0;
-    padding:30px;
-    background:#111;
-    color:#fff;
-    font-family:Arial,sans-serif;
-    max-width:1100px;
-    margin:auto;
+margin:0;
+font-family:Arial,sans-serif;
+background:#111;
+color:white;
 }
 
-h2{
-    text-align:center;
-    margin-bottom:20px;
+header{
+background:#000;
+padding:18px;
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
 
-input{
-    width:100%;
-    padding:12px;
-    margin-bottom:15px;
-    background:#222;
-    color:#fff;
-    border:1px solid #444;
-    border-radius:6px;
+.logo{
+font-size:28px;
+font-weight:bold;
+color:#00d4ff;
 }
 
-button{
-    border:none;
-    padding:10px 16px;
-    color:#fff;
-    cursor:pointer;
-    border-radius:5px;
-    margin:2px;
-    transition:.2s;
+nav a{
+color:white;
+margin:15px;
+text-decoration:none;
 }
 
-button:hover{
-    opacity:.9;
+.hero{
+padding:70px 20px;
+text-align:center;
+background:#181818;
 }
 
-.create{background:#00c853;}
-.copy{background:#2962ff;}
-.edit{background:#ff9800;}
-.delete{background:#d50000;}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:20px;
+.hero h1{
+font-size:48px;
 }
 
-th,td{
-    border:1px solid #333;
-    padding:10px;
-    text-align:left;
-    vertical-align:middle;
+.hero p{
+max-width:700px;
+margin:auto;
+font-size:18px;
+color:#bbb;
 }
 
-th{
-    background:#222;
+.button{
+display:inline-block;
+margin-top:25px;
+padding:15px 35px;
+background:#00d4ff;
+color:black;
+text-decoration:none;
+border-radius:6px;
+font-weight:bold;
 }
 
-td.url{
-    max-width:500px;
-    word-break:break-all;
-}
+.grid{
 
-a{
-    color:#00e5ff;
-    text-decoration:none;
-}
+display:grid;
 
-a:hover{
-    text-decoration:underline;
-}
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 
-@media(max-width:768px){
+gap:20px;
 
-table{
-    display:block;
-    overflow:auto;
-}
-
-body{
-    padding:15px;
-}
-
-button{
-    width:100%;
-    margin-top:5px;
-}
+padding:40px;
 
 }
+
+.card{
+
+background:#222;
+
+border-radius:10px;
+
+overflow:hidden;
+
+}
+
+.card img{
+
+width:100%;
+
+height:200px;
+
+object-fit:cover;
+
+}
+
+.card h3{
+
+padding:10px;
+
+margin:0;
+
+}
+
+.card p{
+
+padding:0 10px 15px;
+
+color:#aaa;
+
+}
+
+.about{
+
+padding:50px;
+
+line-height:1.8;
+
+}
+
+footer{
+
+background:#000;
+
+padding:25px;
+
+text-align:center;
+
+}
+
+footer a{
+
+color:#ccc;
+
+margin:10px;
+
+text-decoration:none;
+
+}
+
+<center>
 </style>
+<script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
+ <ins class="eas6a97888e2" data-zoneid="5984314"></ins> 
+ <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+</center>
+<header>
+<div class="logo">GoFlie</div>
 
-</head>
+<nav>
 
-<body>
+<a href="/">Home</a>
+<a href="/about.html">About</a>
+<a href="/privacy.html">Privacy</a>
+<a href="/terms.html">Terms</a>
+<a href="/2257.html">2257 Compliance</a>
+<a href="/dmca.html">DMCA</a>
+<a href="/contact.html">Contact</a>
 
-<h2>GoFlie Admin Dashboard</h2>
+</nav>
 
-<input id="url" placeholder="https://example.com">
+</header>
 
-<button class="create" onclick="create()">
-Create Link
-</button>
+<section class="hero">
 
-<table>
+<h1>Trending Live Cameras</h1>
 
-<thead>
+<p>
 
-<tr>
-<th>Slug</th>
-<th>URL</th>
-<th>Clicks</th>
-<th>Action</th>
-</tr>
+Watch publicly available live cameras from around the world.
 
-</thead>
+Discover popular city cameras, travel destinations,
 
-<tbody id="list">
+nature, beaches and more.
 
-</tbody>
+</p>
 
-</table>
-
-<script>
-
-const API=window.location.origin;
-
-function randomSlug(length=6){
-
-const chars="abcdefghijklmnopqrstuvwxyz0123456789";
-
-let result="";
-
-for(let i=0;i<length;i++){
-
-result+=chars[Math.floor(Math.random()*chars.length)];
-
-}
-
-return result;
-
-}
-
-async function load(){
-
-const res=await fetch(API+"/api/list");
-
-const data=await res.json();
-
-document.getElementById("list").innerHTML=data.map(x=>`
-
-<tr>
-
-<td>${x.slug}</td>
-
-<td class="url">
-<a href="${x.original_url}" target="_blank">
-${x.original_url}
+<a class="button" href="#cams">Browse Cameras</a>
+ 
+</section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/8SZ2yViE1.mp4" class="card-link"> 
+<div class="card">
+<img src="https://i.ibb.co/pjhJJVXm/image-with-play-button-44.png">
+<h3> 19금 이세계 군대 탈출기</h3>
+<p>South Korea</p>
+</div>
 </a>
-</td>
 
-<td style="text-align:center">
-${x.clicks ?? 0}
-</td>
+<section id="cams" class="grid">
+    <!-- ពេលចុច វានឹងចូលទៅកាន់ player.html ផ្ទាល់ក្នុង Tab ដែករបស់ App X តែម្តង ធានាមិនខូចខាត -->
+    <a href="player.html?video=https://pub-57b7cb5b407e4280b5f98f8245eff1c6.r2.dev/Movieskiss.mp4" class="card-link">  
+        <div class="card">
+            <img src="https://i.ibb.co/SwzyJMyv/image-with-play-button-42.png">
+            <h3>Seoul Street Camera</h3>
+            <p>South Korea</p>
+        </div>
+    </a>
+</section>
+  
+</section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/HgK0qgDP1.mp4" class="card-link">  
+<div class="card">
+<img src="https://i.ibb.co/MrwmH43/image-with-play-button-39.png">
+<h3>Tokyo Station</h3>
+<p>Japan</p>
+</div>
+</a>
+  
+</section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/ltEhUWqQ1.mp4" class="card-link">  
+<div class="card">
+<img src="https://i.ibb.co/K3QGgzf/image-with-play-button-40.png">
+<h3>Busan Beach</h3>
+<p>South Korea</p>
+</div>
+</a>
+  
+ </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/HgA4F2ZI1.mp4" class="card-link">  
+<div class="card"> 
+<div class="card">
+<img src="https://i.ibb.co/SwzyJMyv/image-with-play-button-42.png">
+<h3>Bangkok City</h3>
+<p>Thailand</p>
+</div>
+ </a>
+  
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/7aUIV0OZ1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/Z6tv9G46/6768678-HJHJJJGH.png">
+<h3>Seoul Street Camera</h3>
+<p>South Korea</p>
+</div>
+</a>
 
-<td>
+</section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://pub-57b7cb5b407e4280b5f98f8245eff1c6.r2.dev/movieskiss.mp4" class="card-link">  
+<div class="card">  
+<div class="card">
+<img src="https://i.ibb.co/qFDPdNBz/image-with-play-button-41.png">
+<h3>Tokyo Station</h3>
+<p>Japan</p>
+</div>
+ </a>
+  
+</section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/DuYheKHq1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/Lyb6x1m/photo-2022-05-27-20-56-28.jpg">
+<h3>Busan Beach</h3>
+<p>South Korea</p>
+</div>
+  
+</section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/byBBSLDt1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/WNNDwnR5/rrrrrr.png">
+<h3>Bangkok City</h3>
+<p>Thailand</p>
+</div>
+ </a>
+ </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/tczq8Hrx1.mp4" class="card-link">  
+<div class="card"> 
+<div class="card">
+<img src="https://i.ibb.co/SXHFLm5x/photo-2026-05-23-11-50-49.jpg">
+<h3>Seoul Street Camera</h3>
+<p>South Korea</p>
+</div>
+</a>
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/OOyY3kAd1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/gbRSvwK4/2222.png">
+<h3>Tokyo Station</h3>
+<p>Japan</p>
+</div>
+</a>
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/HgK0qgDP1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/r2nz8Qpk/02606092032.png">
+<h3>Busan Beach</h3>
+<p>South Korea</p>
+</div>
+</a>
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/JjTLcUvw1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/j9sKFn0T/11-43.png">
+<h3>Bangkok City</h3>
+<p>Thailand</p>
+</div>
+ </a>
+  
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/HWtQMgyI1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/SXHFLm5x/photo-2026-05-23-11-50-49.jpg">
+<h3>Seoul Street Camera</h3>
+<p>South Korea</p>
+ </a>
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/EGKmje6t1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/Lyb6x1m/photo-2022-05-27-20-56-28.jpg">
+<h3>Busan Beach</h3>
+<p>South Korea</p>
+</div>
+ </a>
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/ksnCnJjL1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/Lyb6x1m/photo-2022-05-27-20-56-28.jpg">
+<h3>Busan Beach</h3>
+<p>South Korea</p>
+</div>
+</a>
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/EnPkpEMC1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/WNNDwnR5/rrrrrr.png">
+<h3>Bangkok City</h3>
+<p>Thailand</p>
+</div>
+</a>
+  
+<div class="card">
+<img src="https://i.ibb.co/SXHFLm5x/photo-2026-05-23-11-50-49.jpg">
+<h3>Seoul Street Camera</h3>
+<p>South Korea</p>
+</div>
+</a> 
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/Q7EFjZGv1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/WNNDwnR5/rrrrrr.png">
+<h3>Bangkok City</h3>
+<p>Thailand</p>
+</div>
+</a>
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/HgK0qgDP1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/SXHFLm5x/photo-2026-05-23-11-50-49.jpg">
+<h3>Seoul Street Camera</h3>
+<p>South Korea</p>
+</div>
+</a>
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/MRso0FDY1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/gbRSvwK4/2222.png">
+<h3>Tokyo Station</h3>
+<p>Japan</p>
+</div>
+</a>
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/KlYq83431.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/r2nz8Qpk/02606092032.png">
+<h3>Busan Beach</h3>
+<p>South Korea</p>
+</div>
+</a>
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/HgK0qgDP1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/j9sKFn0T/11-43.png">
+<h3>Bangkok City</h3>
+<p>Thailand</p>
+</div>
+ </a>
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/XZ1S9nyK1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/SXHFLm5x/photo-2026-05-23-11-50-49.jpg">
+<h3>Seoul Street Camera</h3>
+<p>South Korea</p>
+</div>
+</a>
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/6KK7MGbX1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/gbRSvwK4/2222.png">
+<h3>Tokyo Station</h3>
+<p>Japan</p>
+</div>
+</a>
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/HgK0qgDP1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/r2nz8Qpk/02606092032.png">
+<h3>Busan Beach</h3>
+<p>South Korea</p>
+</div>
+</a>
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/HgK0qgDP1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/j9sKFn0T/11-43.png">
+<h3>Bangkok City</h3>
+<p>Thailand</p>
+</div>
+</a>
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/HgK0qgDP1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/Tx4vb3VS/6a05d0fee217d-fbutube-1.jpg">
+<h3>Singapore Marina</h3>
+<p>Singapore</p>
+</div>
+</a>
+  </section>
+<section id="cams" class="grid">
+<a href="player.html?video=https://cdn.videy.co/HgK0qgDP1.mp4" class="card-link">  
+<div class="card">
+<div class="card">
+<img src="https://i.ibb.co/Rksc0JG8/6a0957e5cfceb-fbutube-4.jpgg">
+<h3>Hong Kong Street</h3>
+<p>Hong Kong</p>
+</div>
 
-<button class="copy"
-onclick="copyLink('${x.slug}')">
-Copy
-</button>
+</section>
 
-<button class="edit"
-onclick="editLink('${x.slug}','${x.original_url}','${x.title||""}')">
-Edit
-</button>
+<section class="about">
 
-<button class="delete"
-onclick="removeLink('${x.slug}')">
-Delete
-</button>
+<h2>About GoFlie</h2>
 
-</td>
+<p>
 
-</tr>
+GoFlie is an online directory that helps visitors discover
 
-`).join("");
+public live camera streams from different locations around the world.
 
+Users can browse trending cameras by country,
+
+city and category.
+
+The website is designed for travel discovery,
+
+public location viewing,
+
+and entertainment purposes.
+
+Our platform is updated regularly with new listings.
+
+</p>
+<a href="/about.html">About</a>
+
+<a href="/privacy.html">Privacy Policy</a>
+
+<a href="/terms.html">Home</a>
+
+<a href="/contact.html">Contact</a>
+
+<a href="/dmca.html">Kissdrama</a>
+</section>
+<script>
+function openLinkAndPlay(event, videoUrl, smartLinkUrl) {
+    event.preventDefault(); 
+    
+    // ១. បើកទំព័រ player.html ក្នុង Tab ថ្មី (Browser មិនប្លុកព្រោះជា Website ផ្ទាល់ខ្លួន)
+    window.open('player.html?video=' + encodeURIComponent(videoUrl), '_blank');
+    
+    // ២. ប្តូរទំព័រដើម (Current Tab) ឱ្យចូលទៅកាន់ SmartLink របស់អ្នក
+    window.location.href = smartLinkUrl;
 }
-
-async function create(){
-
-const url=document.getElementById("url").value.trim();
-
-if(!url){
-
-alert("Please enter URL");
-
-return;
-
-}
-
-await fetch(API+"/api/create",{
-
-method:"POST",
-
-headers:{
-
-"Content-Type":"application/json"
-
-},
-
-body:JSON.stringify({
-
-slug:randomSlug(),
-
-url:url
-
-})
-
-});
-
-document.getElementById("url").value="";
-
-load();
-
-}
-
-async function editLink(slug,url,title){
-
-const newUrl=prompt("Original URL",url);
-
-if(newUrl===null)return;
-
-const newTitle=prompt("Title",title);
-
-await fetch(API+"/api/update",{
-
-method:"POST",
-
-headers:{
-
-"Content-Type":"application/json"
-
-},
-
-body:JSON.stringify({
-
-slug:slug,
-
-url:newUrl,
-
-title:newTitle
-
-})
-
-});
-
-load();
-
-}
-
-async function removeLink(slug){
-
-if(!confirm("Delete "+slug+" ?")) return;
-
-await fetch(API+"/api/delete/"+slug);
-
-load();
-
-}
-
-function copyLink(slug){
-
-const link=location.origin+"/"+slug;
-
-navigator.clipboard.writeText(link);
-
-alert("Copied:\n"+link);
-
-}
-
-load();
-
-</script>
 
 </body>
+
 </html>
