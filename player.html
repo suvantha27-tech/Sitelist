@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+[7/30/2026 11:49 PM] កូន ប៉ាប៉ា: <!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Watch Video then Smart Link</title>
     <style>
-        /* ----- RESET & GLOBAL ----- */
+        /* ----- RESET & FULLSCREEN VIDEO ----- */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -27,11 +27,11 @@
             font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
         }
 
-        /* ----- VIDEO CONTAINER (fullscreen) ----- */
         .video-wrapper {
             width: 100%;
             height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             background: #000;
@@ -46,52 +46,53 @@
             display: block;
         }
 
-        /* ----- SMART LINK BADGE (floating, from bottom) ----- */
+        /* ----- SMART LINK CONTAINER (fixed at bottom, auto-show) ----- */
         .smart-link-container {
             position: fixed;
-            bottom: 2.5rem;
+            bottom: 2.2rem;
             left: 0;
             width: 100%;
             display: flex;
             justify-content: center;
-            pointer-events: none;          /* allow clicks to pass to video if needed */
-            z-index: 20;
+            pointer-events: none;
+            z-index: 30;
             padding: 0 1.2rem;
         }
 
         .smart-link {
             display: inline-flex;
             align-items: center;
-            gap: 0.75rem;
-            background: rgba(12, 18, 34, 0.65);
-            backdrop-filter: blur(14px) saturate(1.3);
-            -webkit-backdrop-filter: blur(14px) saturate(1.3);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            gap: 0.7rem;
+            background: rgba(10, 14, 26, 0.72);
+            backdrop-filter: blur(16px) saturate(1.4);
+            -webkit-backdrop-filter: blur(16px) saturate(1.4);
+            border: 1px solid rgba(255, 255, 255, 0.07);
             border-radius: 60px;
-            padding: 0.8rem 1.8rem 0.8rem 2.2rem;
-            box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.02);
+            padding: 0.75rem 1.8rem 0.75rem 2.2rem;
+            box-shadow: 0 20px 44px -14px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.02);
             color: #eef3ff;
             text-decoration: none;
             font-weight: 500;
-            font-size: 1.05rem;
+            font-size: 1rem;
             letter-spacing: 0.2px;
-            pointer-events: auto;           /* make it clickable */
-            transition: all 0.25s ease;
-            max-width: 90%;
+            pointer-events: auto;
+            transition: all 0.3s ease;
+            max-width: 92%;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
 
-            /* animation: slide up from bottom (walks from below) */
-            animation: slideUpFromBottom 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            /* ✨ AUTO ANIMATION: walks from bottom (ដើរពីក្រោម) */
+            animation: slideUpFromBottom 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
             opacity: 0;
-            transform: translateY(40px) scale(0.97);
+            transform: translateY(50px) scale(0.96);
         }
 
+        /* icon & text styling */
         .smart-link i {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #7f9eff;
-            transition: transform 0.25s ease;
+            transition: transform 0.3s ease;
             flex-shrink: 0;
         }
 
@@ -111,44 +112,42 @@
             padding: 0.2rem 1rem 0.2rem 1.2rem;
             border-radius: 40px;
             border-left: 1px solid rgba(255, 255, 255, 0.06);
-            max-width: 220px;
+            max-width: 200px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
         .smart-link .arrow-icon {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             opacity: 0.6;
-            margin-left: 0.2rem;
+            margin-left: 0.1rem;
             transition: transform 0.3s ease;
         }
 
-        /* HOVER effects (smart & responsive) */
+        /* HOVER effects */
         .smart-link:hover {
- background: rgba(22, 32, 60, 0.8);
-            border-color: rgba(100, 140, 255, 0.4);
-            box-shadow: 0 18px 40px -10px #1a2a6a, 0 0 0 1px #4e7aff40;
+            background: rgba(22, 32, 60, 0.85);
+[7/30/2026 11:49 PM] កូន ប៉ាប៉ា: border-color: rgba(100, 140, 255, 0.4);
+            box-shadow: 0 18px 44px -10px #1a2a6a, 0 0 0 1px #4e7aff40;
             transform: scale(1.02) translateY(-2px);
         }
 
         .smart-link:hover i {
             transform: translateX(4px) scale(1.05);
         }
-
         .smart-link:hover .arrow-icon {
             transform: translateX(3px);
         }
-
         .smart-link:active {
             transform: scale(0.96) translateY(2px);
         }
 
-        /* ----- ANIMATION: slide from bottom (ដើរពីក្រោម) ----- */
+        /* KEYFRAMES: slide from bottom */
         @keyframes slideUpFromBottom {
             0% {
                 opacity: 0;
-                transform: translateY(50px) scale(0.94);
+                transform: translateY(60px) scale(0.93);
             }
             60% {
                 opacity: 1;
@@ -160,18 +159,32 @@
             }
         }
 
-        /* small pulse on load (extra walk effect) */
-        .smart-link.walk-effect {
-            animation: slideUpFromBottom 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        /* small badge extra: "auto" indicator (optional, but shows it's automatic) */
+        .auto-badge {
+            position: fixed;
+            bottom: 5.2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 25;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            font-size: 0.6rem;
+            color: #8a9bcb;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            pointer-events: none;
+            opacity: 0.7;
+            text-transform: uppercase;
         }
 
-        /* ----- RESPONSIVE TWEAKS ----- */
+        /* responsive */
         @media (max-width: 600px) {
             .smart-link {
                 padding: 0.6rem 1.2rem 0.6rem 1.6rem;
-                font-size: 0.9rem;
+                font-size: 0.85rem;
                 gap: 0.5rem;
-                flex-wrap: nowrap;
                 border-radius: 40px;
             }
             .smart-link .link-url {
@@ -180,11 +193,16 @@
                 padding: 0.1rem 0.7rem 0.1rem 0.9rem;
             }
             .smart-link i {
-                font-size: 1.1rem;
+                font-size: 1rem;
             }
             .smart-link-container {
-                bottom: 1.5rem;
+                bottom: 1.4rem;
                 padding: 0 0.8rem;
+            }
+            .auto-badge {
+                bottom: 4.8rem;
+                font-size: 0.5rem;
+                padding: 0.15rem 0.8rem;
             }
         }
 
@@ -193,12 +211,12 @@
                 max-width: 80px;
             }
             .smart-link {
-                font-size: 0.8rem;
+                font-size: 0.75rem;
                 padding: 0.5rem 1rem 0.5rem 1.2rem;
             }
         }
 
-        /* fallback if something fails */
+        /* fallback message */
         .no-video-msg {
             color: #c8d0e6;
             background: #11161f;
@@ -212,13 +230,12 @@
 <body>
 
     <div class="video-wrapper">
-        <!-- Video element: controls + autoplay + muted (for auto policy) -->
         <video id="player" controls autoplay muted playsinline></video>
     </div>
 
-    <!-- SMART LINK (floating from bottom) -->
+    <!-- SMART LINK (floating at bottom, auto-animated) -->
     <div class="smart-link-container">
-        <a href="#" id="smartLink" target="_blank" rel="noopener noreferrer" class="smart-link walk-effect">
+        <a href="#" id="smartLink" target="_blank" rel="noopener noreferrer" class="smart-link">
             <i class="fas fa-link"></i>
             <span class="link-label">Smart Link</span>
             <span class="link-url" id="linkUrlDisplay">arcadiablankdenying.com</span>
@@ -226,21 +243,26 @@
         </a>
     </div>
 
-    <!-- Font Awesome (icons) -->
+    <!-- small "auto" indicator (just to show it's automatic) -->
+    <div class="auto-badge">
+        <i class="fas fa-play" style="margin-right: 4px; font-size: 0.5rem;"></i> auto
+    </div>
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <script>
         (function() {
             // ----- CONFIG -----
             const SMART_LINK_HREF = "https://arcadiablankdenying.com/fqe7h6e1?key=1dd585cf18df934105bec8bc629e7064";
-            const SMART_LINK_DISPLAY = "arcadiablankdenying.com";   // short display
+            const SMART_LINK_DISPLAY = "arcadiablankdenying.com";
 
             // DOM refs
-            const player = document.getElementById('player');
+[7/30/2026 11:49 PM] កូន ប៉ាប៉ា: const player = document.getElementById('player');
             const smartLink = document.getElementById('smartLink');
             const linkUrlDisplay = document.getElementById('linkUrlDisplay');
 
-            // Set smart link href + display text
+            // Set smart link
             smartLink.href = SMART_LINK_HREF;
             linkUrlDisplay.textContent = SMART_LINK_DISPLAY;
 
@@ -249,14 +271,11 @@
             const videoUrl = params.get("video");
 
             if (videoUrl) {
-            player.src = videoUrl;
-                // Autoplay with catch (browser may block)
+                player.src = videoUrl;
                 player.play().catch(err => {
                     console.log("Autoplay blocked:", err);
-                    // user can click play manually (controls are visible)
                 });
             } else {
-                // fallback: show message inside video wrapper
                 const wrapper = document.querySelector('.video-wrapper');
                 wrapper.innerHTML = `
                     <div class="no-video-msg">
@@ -265,32 +284,27 @@
                         <p style="color: #8895b9; margin-top: 0.4rem;">Add <code style="background:#1f2638; padding:0.2rem 0.8rem; border-radius:20px;">?video=URL</code></p>
                     </div>
                 `;
-                // hide smart link? keep it but disabled
+                // disable smart link if no video
                 smartLink.style.opacity = '0.4';
                 smartLink.style.pointerEvents = 'none';
+                document.querySelector('.auto-badge').style.opacity = '0.2';
             }
 
             // ----- AUTO REDIRECT ON VIDEO END (ស្វ័យប្រវត្តិ) -----
             player.addEventListener('ended', function() {
-                // Redirect to smart link when video finishes
                 window.location.href = SMART_LINK_HREF;
             });
 
-            // ----- (optional) track if user clicks the smart link manually -----
+            // ----- GA event on manual click -----
             smartLink.addEventListener('click', function(e) {
-                // if video is still playing, you might want to prevent? 
-                // but we allow manual click anytime.
-                console.log('Smart link clicked manually');
-                // Google Analytics could be triggered here
-                gtag('event', 'smart_link_click', {
+                gtag('event', 'smart_link_manual_click', {
                     'event_category': 'engagement',
                     'event_label': SMART_LINK_HREF
                 });
-                // The link will open in new tab because of target="_blank"
-                // we don't prevent default
+                // link opens in new tab (target="_blank")
             });
 
-            // (optional) also send event when video ends (automatic redirect)
+            // GA event when video ends (auto redirect)
             player.addEventListener('ended', function() {
                 gtag('event', 'video_ended_auto_redirect', {
                     'event_category': 'video',
@@ -298,7 +312,7 @@
                 });
             });
 
-            console.log('✅ Video player ready · Smart link walks from bottom.');
+            console.log('✅ Smart link auto-displayed at bottom · walks from below');
         })();
     </script>
 
