@@ -1,320 +1,92 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-P8WT456TS4"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-P8WT456TS4');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-P8WT456TS4');
     </script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Watch Video then Smart Link</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video and Smart Link Split View</title>
     <style>
-        /* ----- RESET & FULLSCREEN VIDEO ----- */
-        * {
-            box-sizing: border-box;
+        * { box-sizing: border-box; }
+        html, body {
             margin: 0;
             padding: 0;
-        }
-        html, body {
             width: 100%;
             height: 100%;
-            background: #0a0c12;
+            background: #000;
             overflow: hidden;
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        .video-wrapper {
-            width: 100%;
-            height: 100vh;
+            font-family: sans-serif;
             display: flex;
             flex-direction: column;
+        }
+        /* ផ្នែកវីដេអូខាងលើ (ពាក់កណ្ដាលអេក្រង់) */
+        .video-section {
+            flex: 1;
+            width: 100%;
+            height: 50vh;
+            background: #000;
+            display: flex;
             justify-content: center;
             align-items: center;
-            background: #000;
-            position: relative;
         }
-
         video {
             width: 100%;
             height: 100%;
             object-fit: contain;
             background: #000;
-            display: block;
         }
-
-        /* ----- SMART LINK CONTAINER (fixed at bottom, auto-show) ----- */
-        .smart-link-container {
-            position: fixed;
-            bottom: 2.2rem;
-            left: 0;
+        /* ផ្នែក Smart Link ខាងក្រោម (ពាក់កណ្ដាលអេក្រង់) */
+        .smartlink-section {
+            flex: 1;
             width: 100%;
-            display: flex;
-            justify-content: center;
-            pointer-events: none;
-            z-index: 30;
-            padding: 0 1.2rem;
+            height: 50vh;
+            background: #fff;
         }
-
-        .smart-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.7rem;
-            background: rgba(10, 14, 26, 0.72);
-            backdrop-filter: blur(16px) saturate(1.4);
-            -webkit-backdrop-filter: blur(16px) saturate(1.4);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 60px;
-            padding: 0.75rem 1.8rem 0.75rem 2.2rem;
-            box-shadow: 0 20px 44px -14px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.02);
-            color: #eef3ff;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1rem;
-            letter-spacing: 0.2px;
-            pointer-events: auto;
-            transition: all 0.3s ease;
-            max-width: 92%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-
-            /* ✨ AUTO ANIMATION: walks from bottom (ដើរពីក្រោម) */
-            animation: slideUpFromBottom 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-            opacity: 0;
-            transform: translateY(50px) scale(0.96);
-        }
-
-        /* icon & text styling */
-        .smart-link i {
-            font-size: 1.2rem;
-            color: #7f9eff;
-            transition: transform 0.3s ease;
-            flex-shrink: 0;
-        }
-
-        .smart-link .link-label {
-            background: linear-gradient(135deg, #c8d8ff, #a8beff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: 600;
-        }
-
-        .smart-link .link-url {
-            font-weight: 300;
-            font-size: 0.8rem;
-            color: #a7bae6;
-            background: rgba(255, 255, 255, 0.04);
-            padding: 0.2rem 1rem 0.2rem 1.2rem;
-            border-radius: 40px;
-            border-left: 1px solid rgba(255, 255, 255, 0.06);
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .smart-link .arrow-icon {
-            font-size: 0.85rem;
-            opacity: 0.6;
-            margin-left: 0.1rem;
-            transition: transform 0.3s ease;
-        }
-
-        /* HOVER effects */
-        .smart-link:hover {
-            background: rgba(22, 32, 60, 0.85);
- border-color: rgba(100, 140, 255, 0.4);
-            box-shadow: 0 18px 44px -10px #1a2a6a, 0 0 0 1px #4e7aff40;
-            transform: scale(1.02) translateY(-2px);
-        }
-
-        .smart-link:hover i {
-            transform: translateX(4px) scale(1.05);
-        }
-        .smart-link:hover .arrow-icon {
-            transform: translateX(3px);
-        }
-        .smart-link:active {
-            transform: scale(0.96) translateY(2px);
-        }
-
-        /* KEYFRAMES: slide from bottom */
-        @keyframes slideUpFromBottom {
-            0% {
-                opacity: 0;
-                transform: translateY(60px) scale(0.93);
-            }
-            60% {
-                opacity: 1;
-                transform: translateY(-4px) scale(1.01);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        /* small badge extra: "auto" indicator (optional, but shows it's automatic) */
-        .auto-badge {
-            position: fixed;
-            bottom: 5.2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 25;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(6px);
-            padding: 0.25rem 1rem;
-            border-radius: 30px;
-            font-size: 0.6rem;
-            color: #8a9bcb;
-            letter-spacing: 0.5px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            pointer-events: none;
-            opacity: 0.7;
-            text-transform: uppercase;
-        }
-
-        /* responsive */
-        @media (max-width: 600px) {
-            .smart-link {
-                padding: 0.6rem 1.2rem 0.6rem 1.6rem;
-                font-size: 0.85rem;
-                gap: 0.5rem;
-                border-radius: 40px;
-            }
-            .smart-link .link-url {
-                max-width: 120px;
-                font-size: 0.7rem;
-                padding: 0.1rem 0.7rem 0.1rem 0.9rem;
-            }
-            .smart-link i {
-                font-size: 1rem;
-            }
-            .smart-link-container {
-                bottom: 1.4rem;
-                padding: 0 0.8rem;
-            }
-            .auto-badge {
-                bottom: 4.8rem;
-                font-size: 0.5rem;
-                padding: 0.15rem 0.8rem;
-            }
-        }
-
-        @media (max-width: 420px) {
-            .smart-link .link-url {
-                max-width: 80px;
-            }
-            .smart-link {
-                font-size: 0.75rem;
-                padding: 0.5rem 1rem 0.5rem 1.2rem;
-            }
-        }
-
-        /* fallback message */
-        .no-video-msg {
-            color: #c8d0e6;
-            background: #11161f;
-            padding: 2rem 3rem;
-            border-radius: 30px;
-            border: 1px solid #2a334a;
-            text-align: center;
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="video-wrapper">
+    <!-- ផ្នែកវីដេអូខាងលើ -->
+    <div class="video-section">
         <video id="player" controls autoplay muted playsinline></video>
     </div>
 
-    <!-- SMART LINK (floating at bottom, auto-animated) -->
-    <div class="smart-link-container">
-        <a href="#" id="smartLink" target="_blank" rel="noopener noreferrer" class="smart-link">
-            <i class="fas fa-link"></i>
-            <span class="link-label">Smart Link</span>
-            <span class="link-url" id="linkUrlDisplay">arcadiablankdenying.com</span>
-            <i class="fas fa-arrow-right arrow-icon"></i>
-        </a>
+    <!-- ផ្នែក Smart Link ខាងក្រោម ដំណើរការក្នុងពេលជាមួយគ្នា -->
+    <div class="smartlink-section">
+        <iframe id="smartLinkFrame"></iframe>
     </div>
-
-    <!-- small "auto" indicator (just to show it's automatic) -->
-    <div class="auto-badge">
-        <i class="fas fa-play" style="margin-right: 4px; font-size: 0.5rem;"></i> auto
-    </div>
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <script>
-        (function() {
-            // ----- CONFIG -----
-            const SMART_LINK_HREF = "https://arcadiablankdenying.com/fqe7h6e1?key=1dd585cf18df934105bec8bc629e7064";
-            const SMART_LINK_DISPLAY = "arcadiablankdenying.com";
+        const params = new URLSearchParams(window.location.search);
+        const videoUrl = params.get("video");
+        const player = document.getElementById("player");
+        const smartLinkFrame = document.getElementById("smartLinkFrame");
+        const smartLink = "https://arcadiablankdenying.com/fqe7h6e1?key=1dd585cf18df934105bec8bc629e7064";
 
-            // DOM refs
- const player = document.getElementById('player');
-            const smartLink = document.getElementById('smartLink');
-            const linkUrlDisplay = document.getElementById('linkUrlDisplay');
-
-            // Set smart link
-            smartLink.href = SMART_LINK_HREF;
-            linkUrlDisplay.textContent = SMART_LINK_DISPLAY;
-
-            // ----- GET VIDEO FROM QUERY STRING -----
-            const params = new URLSearchParams(window.location.search);
-            const videoUrl = params.get("video");
-
-            if (videoUrl) {
-                player.src = videoUrl;
-                player.play().catch(err => {
-                    console.log("Autoplay blocked:", err);
-                });
-            } else {
-                const wrapper = document.querySelector('.video-wrapper');
-                wrapper.innerHTML = `
-                    <div class="no-video-msg">
-                        <i class="fas fa-video" style="font-size: 2.5rem; color: #4e7aff; margin-bottom: 0.8rem; display: block;"></i>
-                        <h2 style="font-weight: 400; color: #d0dcff;">No video provided</h2>
-                        <p style="color: #8895b9; margin-top: 0.4rem;">Add <code style="background:#1f2638; padding:0.2rem 0.8rem; border-radius:20px;">?video=URL</code></p>
-                    </div>
-                `;
-                // disable smart link if no video
-                smartLink.style.opacity = '0.4';
-                smartLink.style.pointerEvents = 'none';
-                document.querySelector('.auto-badge').style.opacity = '0.2';
-            }
-
-            // ----- AUTO REDIRECT ON VIDEO END (ស្វ័យប្រវត្តិ) -----
-            player.addEventListener('ended', function() {
-                window.location.href = SMART_LINK_HREF;
+        // កំណត់តំណរវីដេអូតាមរយៈ ?video= URL Parameter
+        if (videoUrl) {
+            player.src = videoUrl;
+            player.play().catch(error => {
+                console.log("Autoplay prevented:", error);
             });
+        } else {
+            document.querySelector('.video-section').innerHTML = "<h2 style='color:white;text-align:center;'>No Video Found</h2>";
+        }
 
-            // ----- GA event on manual click -----
-            smartLink.addEventListener('click', function(e) {
-                gtag('event', 'smart_link_manual_click', {
-                    'event_category': 'engagement',
-                    'event_label': SMART_LINK_HREF
-                });
-                // link opens in new tab (target="_blank")
-            });
-
-            // GA event when video ends (auto redirect)
-            player.addEventListener('ended', function() {
-                gtag('event', 'video_ended_auto_redirect', {
-                    'event_category': 'video',
-                    'event_label': videoUrl || 'unknown'
-                });
-            });
-
-            console.log('✅ Smart link auto-displayed at bottom · walks from below');
-        })();
+        // ផ្ទុក Smart Link ឱ្យដើរក្នុង iframe ក្នុងពេលដំណាលគ្នា
+        smartLinkFrame.src = smartLink;
     </script>
-
 </body>
 </html>
